@@ -58,7 +58,6 @@
       getCurrentMediaElement().play();
       playPauseIconObj.setAttribute('src', '#pause-icon');
     } else {
-      document.getElementById('star-wars').currentTime = 0;
       playPauseIconObj.setAttribute('src', '#play-icon');
     }
   }
@@ -78,6 +77,11 @@
 
   function goToNext() {
 
+  }
+
+  function pause(){
+    var currentMedia = getCurrentMediaElement();
+    currentMedia.pause();
   }
 
 

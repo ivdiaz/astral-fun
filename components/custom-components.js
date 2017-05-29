@@ -70,27 +70,42 @@ AFRAME.registerComponent('set-image', {
   }
 });
 
-AFRAME.registerComponent('play-pause-switcher', {
-  schema: {},
+AFRAME.registerComponent('play-control', {
   init: function () {
-    var self = this;
-    var data = self.data;
-    var elScene = self.el;
-    //    on click
-    // To pause
-    if (self.pause == false) {
-      self.setAttribute('src', '#icon-pause');
-      self.
-
-    }else {
-
-    }
-
+    this.el.setAttribute('visible', false)
+    this.el.material = 'visible: false';
   }
 });
 
+AFRAME.registerComponent('pause-control', {
+  init: function () {
+    this.el.setAttribute('visible', true)
+    this.el.material = 'visible: true';
+  }
+});
+
+//AFRAME.registerComponent('play-pause-switcher', {
+//  init: function () {
+//    var data = this.data;
+//    var elScene = this.el;
+//    var playSwitcher = elScene.querySelector('play-pause');
+//    var videoElement = getCurrentMediaElement();
+//    var playSwitcher = document.getElementById('play-pause');
+//    playSwitcher.addEventListener('click', function () {
+//      // To pause
+//      if (this.pause == false) {
+//        this.setAttribute('src', '#pause-icon');
+//        videoElement.pause();
+//        // To play
+//      } else {
+//        this.setAttribute('src', '#play-icon');
+//        videoElement.play();
+//      }
+//    });
+//  }
+//});
+
 AFRAME.registerComponent('mouse-highlight', {
-  schema: {},
   init: function () {
     var data = this.data;
     this.el.addEventListener('mouseenter', function () {

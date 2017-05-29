@@ -57,11 +57,13 @@
           <a-plane id="media-player-bg" width="3.5" height="0.6" color="#333" opacity="0.0">
             <a-entity template="src:#ui-button" data-position="-1.2 0.07 0.1" data-icon-src="#back-icon" data-on-click="goToPrevious()"></a-entity>
             <a-entity template="src:#ui-button" data-position="-0.6 0.07 0.1" data-icon-src="#backward-icon" data-on-click="stepBack()"></a-entity>
-            <a-circle class="interactive" radius="0.25" position="0 0.07 0.1" rotation="0 0 0" color="#333" opacity="0.8" transparent="true">
-            </a-circle>
-            <a-ring id="play-pause" class="interactive" radius-inner="0.22" radius-outer="0.25" position="0 0.07 0.1" rotation="0 0 0" color="#333" opacity="1.0" transparent="true" mouse-highlight sound="on: click; src: #click-sound" onclick="playPause()">
-              <a-image id="play-pause-icon" src="#play-icon" width="0.3" height="0.3" position="0 0 0.01" transparent="true"></a-image>
-            </a-ring>
+            <a-entity template="src:#ui-button" data-position="0 0.07 0.1" data-icon-src="#play-icon" data-on-click="pause()" play-control ></a-entity>
+            <a-entity template="src:#ui-button" data-position="0 0.07 0.1" data-icon-src="#pause-icon" data-on-click="" pause-control></a-entity>
+<!--            <a-circle class="interactive" radius="0.25" position="0 0.07 0.1" rotation="0 0 0" color="#333" opacity="0.8" transparent="true">-->
+<!--            </a-circle>-->
+<!--            <a-ring id="play-pause" class="interactive" radius-inner="0.22" radius-outer="0.25" position="0 0.07 0.1" rotation="0 0 0" color="#333" opacity="1.0" transparent="true" mouse-highlight play-pause-switcher sound="on: click; src: #click-sound" >-->
+<!--              <a-image id="play-pause-icon" src="#play-icon" width="0.3" height="0.3" position="0 0 0.01" transparent="true"></a-image>-->
+<!--            </a-ring>-->
             <a-entity template="src:#ui-button" data-position="0.6 0.07 0.1" data-icon-src="#forward-icon" data-on-click="stepForward()"></a-entity>
             <a-entity template="src:#ui-button" data-position="1.2 0.07 0.1" data-icon-src="#next-icon" data-on-click="goToNext()"></a-entity>
           </a-plane>
