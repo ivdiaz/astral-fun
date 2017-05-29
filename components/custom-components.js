@@ -72,15 +72,42 @@ AFRAME.registerComponent('set-image', {
 
 AFRAME.registerComponent('play-control', {
   init: function () {
-    this.el.setAttribute('visible', false)
-    this.el.material = 'visible: false';
+    this.el.setAttribute('visible', true);
+    this.el.setAttribute('position', '0 0.07 0.1');
+    this.el.addEventListener('click', function () {
+      var playSwitcher = document.getElementById('play-switcher');
+      var pauseSwitcher = document.getElementById('pause-switcher');
+      var screen = document.getElementById('screen');
+      var videoElem = document.getElementById(screen.getAttribute('src').substr(1));
+      videoElem.play();
+      var blackScreen = document.getElementById('black-screen');
+      if (blackScreen.getAttribute('visible') == true) {
+        blackScreen.setAttribute('visible', false);
+      }
+      screen.setAttribute('visible', true);
+      playSwitcher.setAttribute('position', '0 0.07 0.0'); // To let pause button in front
+      playSwitcher.setAttribute('visible', false); // Hide the play button
+      pauseSwitcher.setAttribute('position', '0 0.07 0.1'); // Show pause button in front of camera
+      pauseSwitcher.setAttribute('visible', true); // Show pause button
+    });
   }
 });
 
 AFRAME.registerComponent('pause-control', {
   init: function () {
-    this.el.setAttribute('visible', true)
-    this.el.material = 'visible: true';
+    this.el.setAttribute('visible', false);
+    this.el.setAttribute('position', '0 0.07 0.0');
+    this.el.addEventListener('click', function () {
+      var pauseSwitcher = document.getElementById('pause-switcher');
+      var playSwitcher = document.getElementById('play-switcher');
+      var screen = document.getElementById('screen');
+      var videoElem = document.getElementById(screen.getAttribute('src').substr(1));
+      videoElem.pause();
+      pauseSwitcher.setAttribute('position', '0 0.07 0.0'); // To let play button in front of camera
+      pauseSwitcher.setAttribute('visible', false); // Hide the pause button
+      playSwitcher.setAttribute('position', '0 0.07 0.1'); // Show play button
+      playSwitcher.setAttribute('visible', true); // Show play button
+    });
   }
 });
 
