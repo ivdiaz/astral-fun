@@ -70,9 +70,27 @@ AFRAME.registerComponent('set-image', {
   }
 });
 
+AFRAME.registerComponent('play-pause-switcher', {
+  schema: {},
+  init: function () {
+    var self = this;
+    var data = self.data;
+    var elScene = self.el;
+    //    on click
+    // To pause
+    if (self.pause == false) {
+      self.setAttribute('src', '#icon-pause');
+      self.
+
+    }else {
+
+    }
+
+  }
+});
+
 AFRAME.registerComponent('mouse-highlight', {
-  schema: {
-  },
+  schema: {},
   init: function () {
     var data = this.data;
     this.el.addEventListener('mouseenter', function () {
