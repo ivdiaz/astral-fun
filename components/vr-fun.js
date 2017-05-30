@@ -47,8 +47,28 @@ function contentLoad(mediaId, mediaSrc) {
 }
 
 function goToPrevious() {
-
-
+  var mediaList = [
+    {
+      id: '#game-of-thrones',
+      src: 'media/got.mp4'
+    }, {
+      id: '#pirates',
+      src: 'media/pirates.mp4'
+    }, {
+      id: '#star-wars',
+      src: 'media/star-wars.mp4'
+    }
+  ];
+  var currentMedia = getCurrentMediaElement();
+  var threshold = 5;
+  if (currentMedia) {
+    var currentTime = currentMedia.currentTime;
+    if (currentTime > threshold) { // restart movie
+      currentMedia.currentTime = 0;
+    } else { // if its restarted, move back
+      var mediaData = mediaList.find(x => x.id.substr(1) === currentMedia.id);
+    }
+  }
 }
 
 function stepBack() {
