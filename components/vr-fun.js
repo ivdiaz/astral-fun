@@ -1,3 +1,6 @@
+"use strict";
+
+
 // MODE SWITCH
 function switchToTheaterMode() {
   document.getElementById('room-bg').setAttribute('src', '#theater');
@@ -37,11 +40,10 @@ function contentLoad(mediaId, mediaSrc) {
     oldMedia.load();
     oldMedia.pause();
   }
-  console.log('screen before', screen);
-
-//  screen.setAttribute('src', mediaSrc);
   screen.setAttribute('src', '#' + mediaId);
-  console.log('screen after', screen);
+  screen.components.material.material.map.image = document.getElementById(mediaId); // Workaround to fix material update on new contentLoad
+  //  screen.components.material.material.map.image.setAttribute('src', '#' + mediaId);
+  //  screen.components.material.material.map.image.play();
   if (blackScreen.getAttribute('visible') == true) {
     blackScreen.setAttribute('visible', false);
   }
@@ -54,7 +56,17 @@ function goToPrevious() {
 }
 
 function stepBack() {
-
+  var currentMedia = getCurrentMediaElement();
+  if (currentMedia) {
+    var currentTime = currentMedia.currentTime;
+    currentMedia.pause();
+    if (currentTime >= 5) {
+      currentMedia.currentTime -= 5; // Move 5 seconds back in time
+    } else {
+      currentMedia.currentTime = 0;
+    }
+    currentMedia.play();
+  }
 }
 
 function stepForward() {
@@ -85,13 +97,13 @@ function getCurrentMediaElement() {
   };
   var currentMedia = '';
   switch (screenSrc) {
-  case mediaList.gameOfThrones.src:
+  case mediaList.gameOfThrones.id:
     currentMedia = document.getElementById(mediaList.gameOfThrones.id.substr(1));
     break;
-  case mediaList.pirates.src:
+  case mediaList.pirates.id:
     currentMedia = document.getElementById(mediaList.pirates.id.substr(1));
     break;
-  case mediaList.starWars.src:
+  case mediaList.starWars.id:
     currentMedia = document.getElementById(mediaList.starWars.id.substr(1));
     break;
   }
