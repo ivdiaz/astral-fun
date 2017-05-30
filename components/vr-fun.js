@@ -1,6 +1,3 @@
-"use strict";
-
-
 // MODE SWITCH
 function switchToTheaterMode() {
   document.getElementById('room-bg').setAttribute('src', '#theater');
@@ -31,7 +28,6 @@ function smartBrightness() {
 
 // MEDIA CONTROLS
 function contentLoad(mediaId, mediaSrc) {
-
   var blackScreen = document.getElementById('black-screen');
   var screen = document.getElementById('screen');
   var oldMediaId = screen.getAttribute('src');
@@ -56,12 +52,13 @@ function goToPrevious() {
 }
 
 function stepBack() {
+  var step = 5;
   var currentMedia = getCurrentMediaElement();
   if (currentMedia) {
     var currentTime = currentMedia.currentTime;
     currentMedia.pause();
-    if (currentTime >= 5) {
-      currentMedia.currentTime -= 5; // Move 5 seconds back in time
+    if (currentTime >= step) {
+      currentMedia.currentTime -= step; // Move 5 seconds back in time
     } else {
       currentMedia.currentTime = 0;
     }
@@ -70,7 +67,18 @@ function stepBack() {
 }
 
 function stepForward() {
-
+  var step = 5;
+  var currentMedia = getCurrentMediaElement();
+  if (currentMedia) {
+    var currentTime = currentMedia.currentTime;
+    currentMedia.pause();
+    if (currentTime <= currentMedia.duration) {
+      currentMedia.currentTime += step; // Move 5 seconds forward in time
+    } else {
+      currentMedia.currentTime = currentMedia.duration - 1;
+    }
+    currentMedia.play();
+  }
 }
 
 function goToNext() {
