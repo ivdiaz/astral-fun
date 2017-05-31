@@ -15,8 +15,9 @@
   <a-scene>
     <a-assets>
       <img id="room" src="img/vr-living-room.jpg" crossorigin="anonymous">
-      <img id="theater" src="img/cinema2.jpg" crossorigin="anonymous">
+      <img id="theater" src="img/cinema.jpg" crossorigin="anonymous">
       <img id="theater-icon" src="img/theater-white.png" crossorigin="anonymous">
+      <img id="home-icon" src="img/home.png" crossorigin="anonymous">
       <img id="play-icon" src="img/play.png" crossorigin="anonymous">
       <img id="pause-icon" src="img/pause.png" crossorigin="anonymous">
       <img id="forward-icon" src="img/fast-forward.png" crossorigin="anonymous">
@@ -75,8 +76,6 @@
           <a-image src="${iconSrc}" width="0.3" height="0.3" position="0 0 0.01" transparent="true"></a-image>
         </a-ring>
       </script>
-
-
 
       <!-- Room mode template -->
       <script id="room-mode" type="text/html">
@@ -152,12 +151,71 @@
 
       <!-- Theater mode template -->
       <script id="theater-mode" type="text/html">
-        <a-entity id="light-control">
-          <a-text value="eyou" color="#BBB" rotation="0 90 0" position="0 0 -3" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
-        <a-entity id="media-control">
 
+        <!-- Room Mode -->
+        <a-entity template="src:#ui-button" data-position="-0.15 2.5 -3" data-icon-src="#home-icon" data-on-click="switchToRoomMode()"></a-entity>
+
+        <!-- Media player -->
+        <a-entity id="media-player" position="-0.15 -1.9 -3" visible="true">
+          <a-plane id="media-player-bg" width="3.5" height="0.6" color="#333" opacity="0.0">
+            <a-entity template="src:#ui-button" data-position="-1.2 0.07 0.1" data-icon-src="#back-icon" data-on-click="goToPrevious()"></a-entity>
+            <a-entity template="src:#ui-button" data-position="-0.6 0.07 0.1" data-icon-src="#backward-icon" data-on-click="stepBack()"></a-entity>
+            <a-entity id="play-switcher" template="src:#ui-button-play-pause" data-position="0 0.07 0.1" data-icon-src="#play-icon" play-control></a-entity>
+            <a-entity id="pause-switcher" template="src:#ui-button-play-pause" data-position="0 0.07 0.11" data-icon-src="#pause-icon" pause-control></a-entity>
+            <a-entity template="src:#ui-button" data-position="0.6 0.07 0.1" data-icon-src="#forward-icon" data-on-click="stepForward()"></a-entity>
+            <a-entity template="src:#ui-button" data-position="1.2 0.07 0.1" data-icon-src="#next-icon" data-on-click="goToNext()"></a-entity>
+          </a-plane>
         </a-entity>
+
+        <!-- Lights controls -->
+        <a-entity id="lights-control">
+          <!-- Menu background -->
+          <a-plane color="#333" height="2" width="2.5" rotation="0 90 0" position="-3.2 0.1 0" opacity="0.8"></a-plane>
+          <!-- Header -->
+          <a-plane width="2.300" height="0.440" position="-2.8 0.8 0" rotation="0 90 0" opacity="0">
+            <a-text value="CONTROL DE LUCES" color="#FFF" font="exo2bold" align="center" width="5"></a-text>
+          </a-plane>
+          <!-- Status -->
+          <a-text value="comprobando estado..." color="#FFF275" font="exo2bold" align="center" rotation="0 90 0" position="-2.9 0.5 0" scale="0.6 0.6 0.6"></a-text>
+          <!-- Options -->
+          <a-plane class="interactive" width="2.300" height="0.440" position="-2.9 0.2 0" rotation="0 90 0" opacity="0" mouse-highlight sound="on: click; src: #click-sound" onclick="turnLightsOff()">
+            <a-text value="APAGAR" color="#FFF" font="exo2bold" align="center" width="4"></a-text>
+          </a-plane>
+          <a-plane class="interactive" width="2.300" height="0.440" position="-2.9 -0.1 0" rotation="0 90 0" opacity="0" mouse-highlight sound="on: click; src: #click-sound" onclick="smartBrightness()">
+            <a-text value="ATENUAR" color="#FFF" font="exo2bold" align="center" width="4"></a-text>
+          </a-plane>
+          <a-plane class="interactive" width="2.300" height="0.440" position="-2.9 -0.4 0" rotation="0 90 0" opacity="0" mouse-highlight sound="on: click; src: #click-sound" onclick="turnLightsOn()">
+            <a-text value="ENCENDER" color="#FFF" font="exo2bold" align="center" width="4"></a-text>
+          </a-plane>
+        </a-entity>
+
+        <!-- Media selector -->
+        <a-entity id="media-control">
+          <!-- Menu background -->
+          <a-plane color="#333" height="2" width="3" rotation="0 270 0" position="3.2 0.1 0" opacity="0.8"></a-plane>
+          <!-- Header -->
+          <a-plane width="2.300" height="0.440" position="2.8 0.8 0" rotation="0 270 0" opacity="0">
+            <a-text value="ENTRETENIMIENTO" color="#FFF" font="exo2bold" align="center" width="5"></a-text>
+          </a-plane>
+          <!-- Status -->
+          <a-text value="selecciona un archivo para reproducirlo" color="#FFF275" font="exo2bold" align="center" rotation="0 270 0" position="2.9 0.5 0" scale="0.6 0.6 0.6"></a-text>
+          <!-- Options -->
+          <a-plane class="interactive" width="2.300" height="0.440" position="2.9 0.2 0" rotation="0 270 0" opacity="0" mouse-highlight sound="on: click; src: #click-sound" onclick="contentLoad('game-of-thrones', 'media/got.mp4')">
+            <a-text value="Juego de tronos" color="#FFF" font="exo2bold" align="center" width="4"></a-text>
+          </a-plane>
+          <a-plane class="interactive" width="2.300" height="0.440" position="2.9 -0.1 0" rotation="0 270 0" opacity="0" mouse-highlight sound="on: click; src: #click-sound" onclick="contentLoad('pirates', 'media/pirates.mp4')">
+            <a-text value="Piratas del Caribe" color="#FFF" font="exo2bold" align="center" width="4"></a-text>
+          </a-plane>
+          <a-plane class="interactive" width="2.300" height="0.440" position="2.9 -0.4 0" rotation="0 270 0" opacity="0" mouse-highlight sound="on: click; src: #click-sound" onclick="contentLoad('star-wars', 'media/star-wars.mp4')">
+            <a-text value="Star Wars" color="#FFF" font="exo2bold" align="center" width="4"></a-text>
+          </a-plane>
+        </a-entity>
+        <!-- Screen  -->
+        <a-plane id="screen-sides" height="4" width="18" color="#222" position="-0.75 0.65 -4.05"></a-plane>
+        <a-entity id="black-screen" geometry="primitive: plane; height: 4; width: 7.1111" position="-0.14 0.65 -4" material="src:#black-cover">
+        </a-entity>
+        <a-video id="screen" src="" height="4" width="7.1111" position="-0.14 0.65 -4" visible="false"></a-video>
+
       </script>
     </a-assets>
 
