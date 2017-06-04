@@ -1,4 +1,5 @@
-//setMenuLightStatus();
+alertUser('VR-fun\n Prueba de concepto', 8, true);
+
 
 function setMenuLightStatus() {
   var lightValue = 'desconectadas';
@@ -10,22 +11,25 @@ function setMenuLightStatus() {
 
 // Scene switch
 function switchToTheaterMode() {
+  alertUser('Entrando en modo teatro', 3, true);
+  resetView();
   document.getElementById('room-bg').setAttribute('src', '#theater');
   document.getElementById('room-bg').setAttribute('rotation', '0 83 0');
   document.getElementById('scene-container').setAttribute('template', 'src', '#theater-mode');
-  alertUser('Entrando en modo teatro');
 }
 
 function switchToRoomMode() {
+  alertUser('Entrando en modo casa', 3, true);
+  resetView();
   document.getElementById('room-bg').setAttribute('src', '#room');
   document.getElementById('room-bg').setAttribute('rotation', '0 180 0');
   document.getElementById('scene-container').setAttribute('template', 'src', '#room-mode');
-  alertUser('Entrando en modo casa');
 }
 
 
 // Light Controls
 function turnLightsOff() {
+  setMenuLightStatus();
   if (isBridgeConnected()) {
     turnLights(false, 254);
     switchOffBgLights();
@@ -36,6 +40,7 @@ function turnLightsOff() {
 }
 
 function turnLightsOn() {
+  setMenuLightStatus();
   if (isBridgeConnected()) {
     turnLights(true, 254);
     switchOnBgLights();
@@ -46,6 +51,7 @@ function turnLightsOn() {
 }
 
 function smartBrightness() {
+  setMenuLightStatus();
   if (isBridgeConnected()) {
     turnLights(true, 10);
     switchOnBgLights();
@@ -80,7 +86,7 @@ function contentLoad(mediaId, mediaSrc) {
     blackScreen.setAttribute('visible', false);
   }
   screen.setAttribute('visible', true);
-  alertUser('Película cargada correctamente');
+  alertUser('Recurso cargado correctamente');
 }
 
 function goToPrevious() {
@@ -171,7 +177,6 @@ function goToNext() {
   }
 }
 
-// UTILS
 function getCurrentMediaElement() {
   var screen = document.getElementById('screen');
   var screenSrc = screen.getAttribute('src');
@@ -272,23 +277,26 @@ function getXY(red, green, blue) {
 
 }
 
-function alertUser(msg, durationInSecs) {
+function alertUser(msg, durationInSecs, fullscreen) {
+  var id = 'ui-message';
   if (!durationInSecs) {
     durationInSecs = 2;
   }
-  var message = document.getElementById('ui-message');
+  if (fullscreen) {
+    id = 'ui-fullscreen-message';
+  }
+  var message = document.getElementById(id);
   message.setAttribute('value', msg);
-  showMessageUI();
+  showMessageUI(id);
   setTimeout(function () {
-    hideMessageUI();
+    hideMessageUI(id);
   }, durationInSecs * 1000);
-
 }
 
-function showMessageUI() {
+function showMessageUI(id) {
   var cursor = document.getElementById('cursor');
-  var background = document.getElementById('ui-message-bg');
-  var message = document.getElementById('ui-message');
+  var background = document.getElementById(id.concat('-bg'));
+  var message = document.getElementById(id);
   // Hide cursor
   cursor.setAttribute('visible', false);
   // Remove interaction
@@ -298,10 +306,10 @@ function showMessageUI() {
   message.setAttribute('visible', true);
 }
 
-function hideMessageUI() {
+function hideMessageUI(id) {
   var cursor = document.getElementById('cursor');
-  var background = document.getElementById('ui-message-bg');
-  var message = document.getElementById('ui-message');
+  var background = document.getElementById(id.concat('-bg'));
+  var message = document.getElementById(id);
   // Show cursor
   cursor.setAttribute('visible', true);
   // Restore interaction
@@ -337,5 +345,15 @@ function switchOffBgLights() {
     bg.setAttribute('src', '#theater-dark');
     break;
   }
+}
 
+function resetView() {
+  var view = document.getElementById('camera');
+  view.setAttribute('look-controls', 'false');
+  view.setAttribute('rotation', {
+    x: 0,
+    y: 0,
+    z: 0
+  });
+  view.setAttribute('look-controls', 'true');
 }

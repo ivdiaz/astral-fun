@@ -155,3 +155,45 @@ AFRAME.registerComponent('check-home-connection', {
     });
   }
 });
+//
+//AFRAME.registerComponent('animate', {
+//  init: function () {
+//    var el = this.el;
+//
+//    this.setupFadeAnimation();
+//
+//    el.addEventListener(, function () {
+//      this.setAttribute('material', 'color:#f00');
+//      // Fade out image
+//      this.emit('set-image-fade');
+//      // Wait for fade to complete
+//      setTimeout(function () {
+//
+//      }, 500);
+//    });
+//  },
+//
+//  /**
+//   * Setup fade-in + fade-out
+//   */
+//  setupFadeAnimation: function () {
+//    var data = this.data;
+//    var targetEl = this.data.target;
+//
+//    // Only set up once.
+//    if (targetEl.dataset.setImageFadeSetup) {
+//      return;
+//    }
+//    targetEl.dataset.setImageFadeSetup = true;
+//
+//    // Create animation.
+//    targetEl.setAttribute('animation__fade', {
+//      property: 'material.color',
+//      startEvents: 'set-image-fade',
+//      dir: 'alternate',
+//      dur: data.dur,
+//      from: '#FFF',
+//      to: '#000'
+//    });
+//  }
+//});

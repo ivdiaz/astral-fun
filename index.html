@@ -228,11 +228,17 @@
     <!-- Container for templates -->
     <a-entity id="scene-container" template="src:#room-mode"></a-entity>
     <!-- Camera + cursor -->
-    <a-entity camera look-controls>
+    <a-entity id="camera" camera look-controls>
       <a-cursor id="cursor" color="gray" animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1 1 1; dur: 150" animation__fusing="property: fusing; startEvents: fusing; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500" event-set__1="_event: mouseenter; color: springgreen" event-set__2="_event: mouseleave; color: gray" fuse="true" raycaster="objects: .link, .interactive"></a-cursor>
+      <a-entity id="ui-fullscreen" visible="true"  position="0 0.1 -0.2">
+        <a-plane id="ui-fullscreen-message-bg" width="20" height="5" color="#333" opacity="1" position="0 0.0 -0.02" visible="false"></a-plane>
+        <a-text id="ui-fullscreen-message" value="VR-fun\nprueba de concepto" width="0.8" position="0 -0.1 -0.01" align="center" color="#FFF" font="exo2bold" visible="false">
+        </a-text>
+      </a-entity>
       <a-plane id="ui-message-bg" width="8.5" height="0.8" position="0 0.05 -2" color="#333" opacity="0.8" visible="false">
       </a-plane>
-      <a-text id="ui-message" value="message test" position="0 0.05 -2" align="center" color="#FFF" font="exo2bold" visible="false"></a-text>
+      <a-text id="ui-message" value="message test" position="0 0.05 -2" align="center" color="#FFF" font="exo2bold" visible="false">
+      </a-text>
     </a-entity>
     <script src="components/vr-fun.js"></script>
   </a-scene>
