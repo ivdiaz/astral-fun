@@ -1,4 +1,14 @@
-// MODE SWITCH
+//setMenuLightStatus();
+
+function setMenuLightStatus() {
+  var lightValue = 'desconectadas';
+  if (isBridgeConnected()) {
+    lightValue = 'conectadas';
+  }
+  document.getElementById('light-status-text').setAttribute('value', lightValue);
+}
+
+// Scene switch
 function switchToTheaterMode() {
   document.getElementById('room-bg').setAttribute('src', '#theater');
   document.getElementById('room-bg').setAttribute('rotation', '0 83 0');
@@ -12,22 +22,33 @@ function switchToRoomMode() {
 }
 
 
-// LIGHT CONTROLS
+// Light Controls
 function turnLightsOff() {
-//  checkConnectionToBridge();
-
+  if (isBridgeConnected()) {
+    turnLights(false, 254);
+  } else {
+    // alert user
+  }
 }
 
 function turnLightsOn() {
-
+  if (isBridgeConnected()) {
+    turnLights(true, 254);
+  } else {
+    // alert user
+  }
 }
 
 function smartBrightness() {
-
+  if (isBridgeConnected()) {
+    turnLights(true, 10);
+  } else {
+    // alert user
+  }
 }
 
 
-// MEDIA CONTROLS
+// Media controls
 function contentLoad(mediaId, mediaSrc) {
   var blackScreen = document.getElementById('black-screen');
   var screen = document.getElementById('screen');
@@ -172,19 +193,106 @@ function getCurrentMediaElement() {
   return currentMedia;
 }
 
-function checkConnectionToBridge() {
-  var url = 'https://www.novelti.io';
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', url, true);
-  xhr.setRequestHeader('Content-type', 'text/html');
-  xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-  xhr.setRequestHeader('Access-Control-Allow-Methods', 'GET,POST, PUT, DELETE, OPTIONS');
-  xhr.setRequestHeader('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token');
-  xhr.send();
+function isBridgeConnected() {
 
-  xhr.onreadystatechange = processRequest;
+  var hue = jsHue(); // lights library
+  hue.discover().then(bridges => {
+    if (bridges.length === 0) {
+      console.log('No bridges found. :(');
+    } else {
+      bridges.forEach(b => console.log('Bridge found at IP address %s.', b.internalipaddress));
+    }
+  }).catch(e => {
+    console.log('Error finding bridges', e);
+    return false;
+  });
+  return true;
+}
 
-  function processRequest(e) {
-    console.log(e);
-  }
+function turnLights(status, brightness) { // Status: ON = true | status: OFF = false
+
+  var username = '128eff92117aeb3f336abf60223eb71f';
+  var ip = '192.168.1.33';
+  var livingroomLight = 2;
+  var bedroomLight = 3;
+  var user = jsHue().bridge(ip).user(username);
+  var xy = getXY(255, 255, 255);
+
+
+  // Modify livingroom light on
+  user.setLightState(livingroomLight, {
+    on: status,
+    bri: brightness
+  }).then(data => {
+    // Alert user with message
+  });
+  // Modify bedroom light on
+  user.setLightState(bedroomLight, {
+    on: status,
+    bri: brightness
+  }).then(data => {
+    // Alert user with message
+  });
+}
+
+// The function below does the grunt work of creating an xy pair that produces
+// colours equivalent to RGB colours.
+
+function getXY(red, green, blue) {
+
+  if (red > 0.04045) {
+    red = Math.pow((red + 0.055) / (1.0 + 0.055), 2.4);
+  } else red = (red / 12.92);
+
+  if (green > 0.04045) {
+    green = Math.pow((green + 0.055) / (1.0 + 0.055), 2.4);
+  } else green = (green / 12.92);
+
+  if (blue > 0.04045) {
+    blue = Math.pow((blue + 0.055) / (1.0 + 0.055), 2.4);
+  } else blue = (blue / 12.92);
+
+  var X = red * 0.664511 + green * 0.154324 + blue * 0.162028;
+  var Y = red * 0.283881 + green * 0.668433 + blue * 0.047685;
+  var Z = red * 0.000088 + green * 0.072310 + blue * 0.986039;
+  var x = X / (X + Y + Z);
+  var y = Y / (X + Y + Z);
+  return new Array(x, y);
+
+}
+
+function alertUser(msg, durationInSecs) {
+  var message = document.getElementById('ui-message');
+  message.setAttribute('value', msg);
+  showMessageUI();
+  setTimeout(function () {
+    hideMessageUI();
+  }, durationInSecs * 1000);
+
+}
+
+function showMessageUI() {
+  var cursor = document.getElementById('cursor');
+  var background = document.getElementById('ui-message-bg');
+  var message = document.getElementById('ui-message');
+  // Hide cursor
+  cursor.setAttribute('visible', false);
+  // Remove interaction
+  cursor.setAttribute('raycaster', '');
+  // Show message ui
+  background.setAttribute('visible', true);
+  message.setAttribute('visible', true);
+}
+
+function hideMessageUI() {
+  var cursor = document.getElementById('cursor');
+  var background = document.getElementById('ui-message-bg');
+  var message = document.getElementById('ui-message');
+  // Show cursor
+  cursor.setAttribute('visible', true);
+  // Restore interaction
+  cursor.setAttribute('raycaster', 'objects: .link, .interactive');
+  // Hide message ui
+  background.setAttribute('visible', false);
+  message.setAttribute('visible', false);
 }

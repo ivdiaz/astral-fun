@@ -111,26 +111,6 @@ AFRAME.registerComponent('pause-control', {
   }
 });
 
-//AFRAME.registerComponent('play-pause-switcher', {
-//  init: function () {
-//    var data = this.data;
-//    var elScene = this.el;
-//    var playSwitcher = elScene.querySelector('play-pause');
-//    var videoElement = getCurrentMediaElement();
-//    var playSwitcher = document.getElementById('play-pause');
-//    playSwitcher.addEventListener('click', function () {
-//      // To pause
-//      if (this.pause == false) {
-//        this.setAttribute('src', '#pause-icon');
-//        videoElement.pause();
-//        // To play
-//      } else {
-//        this.setAttribute('src', '#play-icon');
-//        videoElement.play();
-//      }
-//    });
-//  }
-//});
 
 AFRAME.registerComponent('mouse-highlight', {
   init: function () {
@@ -140,6 +120,36 @@ AFRAME.registerComponent('mouse-highlight', {
     });
     this.el.addEventListener('mouseleave', function () {
       this.setAttribute('scale', '1 1 1');
+    });
+  }
+});
+
+AFRAME.registerComponent('check-home-connection', {
+  init: function () {
+    function isHomeConnected() {
+      var hue = jsHue(); // lights library
+      hue.discover().then(bridges => {
+        if (bridges.length === 0) {
+          console.log('No bridges found. :(');
+        } else {
+          bridges.forEach(b => console.log('Bridge found at IP address %s.', b.internalipaddress));
+        }
+      }).catch(e => {
+        console.log('Error finding bridges', e);
+        return false;
+      });
+      return true;
+    }
+
+    function setConnectionStatus() {
+      var lightValue = 'desconectadas';
+      if (isHomeConnected()) {
+        lightValue = 'conectadas';
+      }
+      document.getElementById('light-status-text').setAttribute('value', lightValue);
+    }
+    this.el.addEventListener('mouseenter', function () {
+      setConnectionStatus();
     });
   }
 });

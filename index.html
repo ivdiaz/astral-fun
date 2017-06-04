@@ -9,6 +9,7 @@
   <script src="https://npmcdn.com/aframe-layout-component@3.0.1"></script>
   <script src="https://npmcdn.com/aframe-template-component@3.1.1"></script>
   <script src="components/custom-components.js"></script>
+  <script src="lib/jshue.js"></script>
 </head>
 
 <body>
@@ -52,6 +53,33 @@
       </video>
       <audio id="click-sound" crossorigin="anonymous" src="https://cdn.aframe.io/360-image-gallery-boilerplate/audio/click.ogg"></audio>
       <!-- Templates -->
+
+      <script id="check-connection">
+//        setConnectionStatus();
+//
+//        function isHomeConnected() {
+//          var hue = jsHue(); // lights library
+//          hue.discover().then(bridges => {
+//            if (bridges.length === 0) {
+//              console.log('No bridges found. :(');
+//            } else {
+//              bridges.forEach(b => console.log('Bridge found at IP address %s.', b.internalipaddress));
+//            }
+//          }).catch(e => {
+//            console.log('Error finding bridges', e);
+//            return false;
+//          });
+//          return true;
+//        }
+//
+//        function setConnectionStatus() {
+//          var lightValue = 'desconectadas';
+//          if (isHomeConnected()) {
+//            lightValue = 'conectadas';
+//          }
+//          document.getElementById('light-status-text').setAttribute('value', lightValue);
+//        }
+      </script>
 
       <!-- Image link template to be reused -->
       <script id="link" type="text/html">
@@ -97,14 +125,15 @@
 
         <!-- Lights controls -->
         <a-entity id="lights-control">
+          <!-- Connection check trigger -->
           <!-- Menu background -->
-          <a-plane color="#333" height="2" width="2.5" rotation="0 90 0" position="-3.2 0.1 0" opacity="0.8"></a-plane>
+          <a-plane class="interactive" color="#333" height="2" width="2.5" rotation="0 90 0" position="-3.2 0.1 0" opacity="0.8" check-home-connection></a-plane>
           <!-- Header -->
           <a-plane width="2.300" height="0.440" position="-2.8 0.8 0" rotation="0 90 0" opacity="0">
             <a-text value="CONTROL DE LUCES" color="#FFF" font="exo2bold" align="center" width="5"></a-text>
           </a-plane>
           <!-- Status -->
-          <a-text value="comprobando estado..." color="#FFF275" font="exo2bold" align="center" rotation="0 90 0" position="-2.9 0.5 0" scale="0.6 0.6 0.6"></a-text>
+          <a-text id="light-status-text" value="comprobando estado..." color="#FFF275" font="exo2bold" align="center" rotation="0 90 0" position="-2.9 0.5 0" scale="0.6 0.6 0.6"></a-text>
           <!-- Options -->
           <a-plane class="interactive" width="2.300" height="0.440" position="-2.9 0.2 0" rotation="0 90 0" opacity="0" mouse-highlight sound="on: click; src: #click-sound" onclick="turnLightsOff()">
             <a-text value="APAGAR" color="#FFF" font="exo2bold" align="center" width="4"></a-text>
@@ -170,13 +199,13 @@
         <!-- Lights controls -->
         <a-entity id="lights-control">
           <!-- Menu background -->
-          <a-plane color="#333" height="2" width="2.5" rotation="0 90 0" position="-3.2 0.1 0" opacity="0.8"></a-plane>
+          <a-plane class="interactive" color="#333" height="2" width="2.5" rotation="0 90 0" position="-3.2 0.1 0" opacity="0.8" check-home-connection></a-plane>
           <!-- Header -->
           <a-plane width="2.300" height="0.440" position="-2.8 0.8 0" rotation="0 90 0" opacity="0">
             <a-text value="CONTROL DE LUCES" color="#FFF" font="exo2bold" align="center" width="5"></a-text>
           </a-plane>
           <!-- Status -->
-          <a-text value="comprobando estado..." color="#FFF275" font="exo2bold" align="center" rotation="0 90 0" position="-2.9 0.5 0" scale="0.6 0.6 0.6"></a-text>
+          <a-text id="light-status-text" value="comprobando estado..." color="#FFF275" font="exo2bold" align="center" rotation="0 90 0" position="-2.9 0.5 0" scale="0.6 0.6 0.6"></a-text>
           <!-- Options -->
           <a-plane class="interactive" width="2.300" height="0.440" position="-2.9 0.2 0" rotation="0 90 0" opacity="0" mouse-highlight sound="on: click; src: #click-sound" onclick="turnLightsOff()">
             <a-text value="APAGAR" color="#FFF" font="exo2bold" align="center" width="4"></a-text>
@@ -227,6 +256,9 @@
     <!-- Camera + cursor -->
     <a-entity camera look-controls>
       <a-cursor id="cursor" color="gray" animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1 1 1; dur: 150" animation__fusing="property: fusing; startEvents: fusing; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500" event-set__1="_event: mouseenter; color: springgreen" event-set__2="_event: mouseleave; color: gray" fuse="true" raycaster="objects: .link, .interactive"></a-cursor>
+      <a-plane id="ui-message-bg" width="3" height="2" position="0 0.05 -2" color="#333" opacity="0.8" visible="false">
+      </a-plane>
+      <a-text id="ui-message" value="message test" position="0 0.05 -2" align="center" color="#FFF" font="exo2bold" visible="false"></a-text>
     </a-entity>
     <script src="components/vr-fun.js"></script>
   </a-scene>
