@@ -16,7 +16,9 @@
   <a-scene>
     <a-assets>
       <img id="room" src="img/vr-living-room.jpg" crossorigin="anonymous">
+      <img id="room-dark" src="img/vr-living-room-dark.jpg" crossorigin="anonymous">
       <img id="theater" src="img/cinema.jpg" crossorigin="anonymous">
+      <img id="theater-dark" src="img/cinema-dark.jpg" crossorigin="anonymous">
       <img id="theater-icon" src="img/theater-white.png" crossorigin="anonymous">
       <img id="home-icon" src="img/home.png" crossorigin="anonymous">
       <img id="play-icon" src="img/play.png" crossorigin="anonymous">
@@ -25,7 +27,6 @@
       <img id="backward-icon" src="img/fast-backward.png" crossorigin="anonymous">
       <img id="back-icon" src="img/previous.png" crossorigin="anonymous">
       <img id="next-icon" src="img/next.png" crossorigin="anonymous">
-      <img id="bg-no-lights" src="img/vr-living-room-off.jpg" crossorigin="anonymous">
       <img id="black-cover" crossorigin="anonymous" src="img/black-cover-01.png">
       <video autoplay="false" id="game-of-thrones" src="media/got.mp4">
         <!-- Workaround to avoid bug with autoplay -->
@@ -53,33 +54,6 @@
       </video>
       <audio id="click-sound" crossorigin="anonymous" src="https://cdn.aframe.io/360-image-gallery-boilerplate/audio/click.ogg"></audio>
       <!-- Templates -->
-
-      <script id="check-connection">
-//        setConnectionStatus();
-//
-//        function isHomeConnected() {
-//          var hue = jsHue(); // lights library
-//          hue.discover().then(bridges => {
-//            if (bridges.length === 0) {
-//              console.log('No bridges found. :(');
-//            } else {
-//              bridges.forEach(b => console.log('Bridge found at IP address %s.', b.internalipaddress));
-//            }
-//          }).catch(e => {
-//            console.log('Error finding bridges', e);
-//            return false;
-//          });
-//          return true;
-//        }
-//
-//        function setConnectionStatus() {
-//          var lightValue = 'desconectadas';
-//          if (isHomeConnected()) {
-//            lightValue = 'conectadas';
-//          }
-//          document.getElementById('light-status-text').setAttribute('value', lightValue);
-//        }
-      </script>
 
       <!-- Image link template to be reused -->
       <script id="link" type="text/html">
@@ -256,7 +230,7 @@
     <!-- Camera + cursor -->
     <a-entity camera look-controls>
       <a-cursor id="cursor" color="gray" animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1 1 1; dur: 150" animation__fusing="property: fusing; startEvents: fusing; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500" event-set__1="_event: mouseenter; color: springgreen" event-set__2="_event: mouseleave; color: gray" fuse="true" raycaster="objects: .link, .interactive"></a-cursor>
-      <a-plane id="ui-message-bg" width="3" height="2" position="0 0.05 -2" color="#333" opacity="0.8" visible="false">
+      <a-plane id="ui-message-bg" width="8.5" height="0.8" position="0 0.05 -2" color="#333" opacity="0.8" visible="false">
       </a-plane>
       <a-text id="ui-message" value="message test" position="0 0.05 -2" align="center" color="#FFF" font="exo2bold" visible="false"></a-text>
     </a-entity>

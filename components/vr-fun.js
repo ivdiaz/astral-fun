@@ -13,12 +13,14 @@ function switchToTheaterMode() {
   document.getElementById('room-bg').setAttribute('src', '#theater');
   document.getElementById('room-bg').setAttribute('rotation', '0 83 0');
   document.getElementById('scene-container').setAttribute('template', 'src', '#theater-mode');
+  alertUser('Entrando en modo teatro');
 }
 
 function switchToRoomMode() {
   document.getElementById('room-bg').setAttribute('src', '#room');
   document.getElementById('room-bg').setAttribute('rotation', '0 180 0');
   document.getElementById('scene-container').setAttribute('template', 'src', '#room-mode');
+  alertUser('Entrando en modo casa');
 }
 
 
@@ -26,24 +28,30 @@ function switchToRoomMode() {
 function turnLightsOff() {
   if (isBridgeConnected()) {
     turnLights(false, 254);
+    switchOffBgLights();
+    alertUser('Luces apagadas');
   } else {
-    // alert user
+    alertUser('Luces no conectadas');
   }
 }
 
 function turnLightsOn() {
   if (isBridgeConnected()) {
     turnLights(true, 254);
+    switchOnBgLights();
+    alertUser('Luces encendidas');
   } else {
-    // alert user
+    alertUser('Luces no conectadas');
   }
 }
 
 function smartBrightness() {
   if (isBridgeConnected()) {
     turnLights(true, 10);
+    switchOnBgLights();
+    alertUser('Luces atenuadas');
   } else {
-    // alert user
+    alertUser('Luces no conectadas');
   }
 }
 
@@ -72,6 +80,7 @@ function contentLoad(mediaId, mediaSrc) {
     blackScreen.setAttribute('visible', false);
   }
   screen.setAttribute('visible', true);
+  alertUser('Película cargada correctamente');
 }
 
 function goToPrevious() {
@@ -118,6 +127,7 @@ function stepBack() {
     }
     currentMedia.play();
   }
+  alertUser('-5 segs');
 }
 
 function stepForward() {
@@ -133,6 +143,7 @@ function stepForward() {
     }
     currentMedia.play();
   }
+  alertUser('+5 segs');
 }
 
 function goToNext() {
@@ -262,6 +273,9 @@ function getXY(red, green, blue) {
 }
 
 function alertUser(msg, durationInSecs) {
+  if (!durationInSecs) {
+    durationInSecs = 2;
+  }
   var message = document.getElementById('ui-message');
   message.setAttribute('value', msg);
   showMessageUI();
@@ -295,4 +309,33 @@ function hideMessageUI() {
   // Hide message ui
   background.setAttribute('visible', false);
   message.setAttribute('visible', false);
+}
+
+function switchOnBgLights() {
+  var bg = document.getElementById('room-bg');
+  var mode = bg.getAttribute('src');
+
+  switch (mode) {
+  case '#room-dark':
+    bg.setAttribute('src', '#room');
+    break;
+  case '#theater-dark':
+    bg.setAttribute('src', '#theater');
+    break;
+  }
+}
+
+function switchOffBgLights() {
+  var bg = document.getElementById('room-bg');
+  var mode = bg.getAttribute('src');
+
+  switch (mode) {
+  case '#room':
+    bg.setAttribute('src', '#room-dark');
+    break;
+  case '#theater':
+    bg.setAttribute('src', '#theater-dark');
+    break;
+  }
+
 }

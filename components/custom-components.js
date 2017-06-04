@@ -89,6 +89,7 @@ AFRAME.registerComponent('play-control', {
       playSwitcher.setAttribute('visible', false); // Hide the play button
       pauseSwitcher.setAttribute('position', '0 0.07 0.1'); // Show pause button in front of camera
       pauseSwitcher.setAttribute('visible', true); // Show pause button
+      alertUser('Reproduciendo');
     });
   }
 });
@@ -107,6 +108,7 @@ AFRAME.registerComponent('pause-control', {
       pauseSwitcher.setAttribute('visible', false); // Hide the pause button
       playSwitcher.setAttribute('position', '0 0.07 0.1'); // Show play button
       playSwitcher.setAttribute('visible', true); // Show play button
+      alertUser('Pausado');
     });
   }
 });
